@@ -3,12 +3,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
-const CURRENCIES = [
-  { value: 'USD', label: 'US Dollar' },
-  { value: 'EUR', label: 'Euro' },
-  { value: 'UAH', label: 'Ukrainian Hryvnia' }
-];
-
 class NBPCurrencyClient {
   constructor() {
     this.base_url = "http://api.nbp.pl/api/exchangerates/rates/A";
@@ -29,6 +23,12 @@ class NBPCurrencyClient {
   }
 }
 
+const CURRENCIES = [
+  { value: 'USD', label: 'US Dollar' },
+  { value: 'EUR', label: 'Euro' },
+  { value: 'UAH', label: 'Ukrainian Hryvnia' }
+];
+
 const CurrencyDashboard = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
   const [data, setData] = useState([]);
@@ -39,8 +39,8 @@ const CurrencyDashboard = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const client = new NBPCurrencyClient();
-        const rates = await client.getHistoricalRates(selectedCurrency, 365);
+        const nbpClient = new NBPCurrencyClient();
+        const rates = await nbpClient.getHistoricalRates(selectedCurrency, 365);
         const formattedData = rates.map(rate => ({
           date: rate.effectiveDate,
           rate: rate.mid
